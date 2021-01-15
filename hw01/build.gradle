@@ -1,0 +1,26 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
+    }
+}
+
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: "application"
+
+mainClassName = "otus.tisch.HelloOtus"
+
+dependencies {
+    implementation "com.google.guava:guava:30.0-jre"
+}
+
+shadowJar {
+    archiveBaseName.set("fatOtus")
+    archiveClassifier.set("")
+    archiveVersion.set("0.1")
+}
+
+tasks.build.dependsOn tasks.shadowJar

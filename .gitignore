@@ -40,7 +40,9 @@ bin
 *.ipr
 *.idea
 
+#VSCode
 .project
 .settings
 **/.settings
 **.classpath
+.vscode

@@ -1,3 +1,4 @@
 rootProject.name = "otus-hw"
 
 include "hw01"
+include "hw03"

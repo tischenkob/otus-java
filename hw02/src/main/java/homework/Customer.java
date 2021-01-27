@@ -22,7 +22,7 @@ public class Customer {
     }
 
     public void setName(String name) {
-        this.name = name;
+        //this.name = name;
     }
 
     public long getScores() {
@@ -30,7 +30,7 @@ public class Customer {
     }
 
     public void setScores(long scores) {
-        this.scores = scores;
+        //this.scores = scores;
     }
 
     @Override

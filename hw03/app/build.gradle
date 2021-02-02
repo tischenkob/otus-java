@@ -4,5 +4,5 @@ plugins {
 }
 
 dependencies {
-    testImplementation project(":bjunit")
+    testImplementation project(":hw03:bjunit")
 }

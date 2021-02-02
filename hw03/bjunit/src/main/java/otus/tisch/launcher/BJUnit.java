@@ -1,3 +1,5 @@
+package otus.tisch.launcher;
+
 public class BJUnit implements TestLauncher {
     public static void main(String[] args) {
         BJUnit tester = new BJUnit();
@@ -6,7 +8,7 @@ public class BJUnit implements TestLauncher {
         tester.teardown();
     }
     
-    void setup(String className);
-    void launch();
-    void teardown();
+    public void setup(String className){};
+    public void launch(){};
+    public void teardown(){};
 }

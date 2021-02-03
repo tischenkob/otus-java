@@ -1,4 +1,0 @@
-rootProject.name = "hw03"
-
-include "app"
-include "bjunit"

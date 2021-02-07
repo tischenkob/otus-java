@@ -30,6 +30,9 @@ hs_err_pid*
 # Ignore Gradle build output directory
 build
 out
+bin
+**/bin
+
 
 #Idea
 *.iml
@@ -37,7 +40,9 @@ out
 *.ipr
 *.idea
 
+#VSCode
 .project
 .settings
 **/.settings
 **.classpath
+.vscode

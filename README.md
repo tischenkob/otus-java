@@ -7,4 +7,5 @@
 Научиться писать многомодульные build-скрипты с зависимостями на Gradle
 
 ./gradlew hw01:build
+
 java -jar ./hw01/build/libs/fatOtus-0.1.jar hello brave new world

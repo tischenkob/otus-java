@@ -1,15 +1,7 @@
-buildscript {
-    repositories {
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:6.1.0'
-    }
+plugins {
+  id "java-app"
+  id "com.github.johnrengelman.shadow" version "6.1.0"
 }
-
-apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: "application"
 
 mainClassName = "otus.tisch.HelloOtus"
 

@@ -1,6 +1,6 @@
 package otus.tisch;
 
-import otus.tisch.annotations.*;
+import bjunit.anno.*;
 
 public class RandomCaseTest {
     private String testString = "Hello world";
@@ -25,5 +25,5 @@ public class RandomCaseTest {
     @After
     public void teardown() {
         System.out.println("After!");
-    }    
+    }
 }

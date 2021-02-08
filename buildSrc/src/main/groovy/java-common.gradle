@@ -4,6 +4,26 @@ plugins {
 
 repositories {
     jcenter()
+    mavenCentral()
+}
+
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE"
+  }
+}
+
+apply plugin: "io.spring.dependency-management"
+
+dependencyManagement {
+    dependencies {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:2.3.1.RELEASE")
+        }
+    }
 }
 
 dependencies {
@@ -17,6 +37,12 @@ dependencies {
 }
 
 tasks.named('test') {
-    // Use junit platform for unit tests.
     useJUnitPlatform()
 }
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+

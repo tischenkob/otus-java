@@ -31,7 +31,6 @@ public class BJUnit {
         beforeMethods = collectMethodsAnnotatedWith(Before.class);
         testMethods = collectMethodsAnnotatedWith(Test.class);
         afterMethods = collectMethodsAnnotatedWith(After.class);
-
     }
 
     {

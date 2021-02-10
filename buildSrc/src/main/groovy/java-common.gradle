@@ -7,25 +7,6 @@ repositories {
     mavenCentral()
 }
 
-buildscript {
-  repositories {
-    jcenter()
-  }
-  dependencies {
-    classpath "io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE"
-  }
-}
-
-apply plugin: "io.spring.dependency-management"
-
-dependencyManagement {
-    dependencies {
-        imports {
-            mavenBom("org.springframework.boot:spring-boot-dependencies:2.3.1.RELEASE")
-        }
-    }
-}
-
 dependencies {
     constraints {
         implementation 'org.apache.commons:commons-text:1.9'

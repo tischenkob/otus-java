@@ -35,7 +35,7 @@ public class BJUnit {
     }
 
     {
-        exceptionMessageTemplate = "%s method could not get invoked because " + "of %s%n";
+        exceptionMessageTemplate = "%s method could not get invoked because of %s%n";
     }
 
     public static void main(String[] args)

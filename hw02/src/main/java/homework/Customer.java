@@ -20,7 +20,6 @@ public class Customer implements Cloneable {
     }
 
     public void setName(String name) {
-        this.name = name;
     }
 
     public long getScores() {
@@ -28,7 +27,6 @@ public class Customer implements Cloneable {
     }
 
     public void setScores(long scores) {
-        this.scores = scores;
     }
 
     @Override

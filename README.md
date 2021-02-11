@@ -15,3 +15,13 @@ java -jar ./hw01/build/libs/fatOtus-0.1.jar hello brave new world
 Подобрать нужную коллекцию, исправить ошибки в классе Customer. Добиться прохождения всех тестов
 
 ./gradlew hw02:test
+
+## hw03
+
+Написать свой тестовый фреймворк с поддержкой аннотаций @Test, @Before, @After.
+
+import bjunit.BJUnit;
+
+var testEngine = new BJUnit(SomeTest.class);
+
+testEngine.execute();

@@ -1,0 +1,15 @@
+plugins {
+    id "java-app"
+}
+
+application {
+    mainClass = "bjunit.BJUnit"
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-class': application.mainClass
+        )
+    }
+}

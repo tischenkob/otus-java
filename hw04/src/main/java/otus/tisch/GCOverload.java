@@ -19,9 +19,7 @@ import java.util.*;
 
 public class GCOverload {
     public static void main(String[] args) {
-        Set<Object> set = new HashSet<>();
-        Map<Object> map = new HashMap();
-
+        
         List<Person> people = new ArrayList<>();
 
         while (true) {

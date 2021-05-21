@@ -19,11 +19,9 @@ import java.util.*;
 
 public class GCOverload {
     public static void main(String[] args) {
-        
         List<Person> people = new ArrayList<>();
-
         while (true) {
-            for (int i = 0; i < 1000; i++) {
+            for (int i = 0; i < 50000; i++) {
                 people.add(new Person());
             }
             for (int i = 0; i < 500; i++) {
@@ -35,6 +33,13 @@ public class GCOverload {
     static class Person {
         private final String name;
         private final Integer age;
+        private String[] strings = {
+                new String("aaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+                new String("bbbbbbbbbbbbbbbbbbbbbbbbbbbb"),
+                new String("ccccccccccccccccccccccccccc"),
+                new String("ddddddddddddddddddddddddddddddddddddddddd"),
+                new String("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+        };
 
         Person() {
             this.age = new Random().nextInt();
@@ -51,11 +56,11 @@ public class GCOverload {
                 var letter = (char) (new Random()).nextInt();
                 result.append(letter);
             }
-            return result.toString();
+            return new String(result.toString());
         }
 
         public String getName() {
-            return name;
+            return new String(name);
         }
     }
 }

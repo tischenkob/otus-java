@@ -18,15 +18,22 @@ package otus.tisch;
 import java.util.*;
 
 public class GCOverload {
+    
+    private static long cycles = 0;
+    
     public static void main(String[] args) {
+        Thread printingHook = new Thread(() -> System.out.printf("There have been %s cycles%n", cycles));
+        Runtime.getRuntime().addShutdownHook(printingHook);
+
         List<Person> people = new ArrayList<>();
         while (true) {
-            for (int i = 0; i < 50000; i++) {
+            for (int i = 0; i < 1000000; i++) {
                 people.add(new Person());
             }
-            for (int i = 0; i < 500; i++) {
+            for (int i = 0; i < 10000; i++) {
                 people.remove(i);
             }
+            cycles++;
         }
     }
 

@@ -15,7 +15,11 @@ public class ATM {
     }
 
     public void store(Collection<Money> moneyCollection) {
-        moneyCollection.forEach(consumer);
+        try {
+            moneyCollection.forEach(consumer);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Sorry, your input is not supported");
+        }
     }
 
     public Collection<Money> request(long value) {

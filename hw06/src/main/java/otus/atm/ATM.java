@@ -27,5 +27,12 @@ public class ATM {
         return Collections.emptySet();
     }
 
+    public String showAvailable() {
+        StringBuilder builder = new StringBuilder();
+        for (var money: producer.showAvailable()) {
+            builder.append(money.toString()).append("\n");
+        }
+        return builder.toString();
+    }
 
 }

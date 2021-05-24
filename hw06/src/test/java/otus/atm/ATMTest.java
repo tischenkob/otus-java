@@ -48,5 +48,7 @@ class ATMTest {
                         new Money(Banknote.ONE, 2L)
                 ))
         );
+
+        System.out.println(atm.showAvailable());
     }
 }

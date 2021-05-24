@@ -19,6 +19,11 @@ public class Money {
         return banknote.getValue() * amount;
     }
 
+    @Override
+    public String toString() {
+        return amount + " x "  + "$" + banknote.getValue();
+    }
+
     public Long getAmount() {
         return amount;
     }

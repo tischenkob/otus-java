@@ -2,6 +2,8 @@ package otus.atm;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 public class MoneyProducer {
 
@@ -9,6 +11,15 @@ public class MoneyProducer {
 
     public MoneyProducer(Storage<Banknote> storage) {
         this.storage = storage;
+    }
+
+    public Collection<Money> showAvailable() {
+        var available = storage.showAvailable();
+        Collection<Money> moneyCollection = new ArrayList<>();
+        for (var entry: available.entrySet()) {
+            moneyCollection.add(new Money(entry.getKey(), entry.getValue()));
+        }
+        return Collections.unmodifiableCollection(moneyCollection);
     }
 
     public Collection<Money> get(final Long requestedValue) {

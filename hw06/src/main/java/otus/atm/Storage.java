@@ -1,9 +1,6 @@
 package otus.atm;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.NavigableMap;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Storage<E extends Enum<E>> {
 
@@ -11,6 +8,10 @@ public class Storage<E extends Enum<E>> {
 
     public Storage(Collection<E> supportedKeys) {
         supportedKeys.forEach(element -> store.put(element, 0L));
+    }
+
+    public Map<E, Long> showAvailable() {
+        return Collections.unmodifiableMap(store);
     }
 
     public Collection<E> getDescendingKeys() {

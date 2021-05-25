@@ -25,3 +25,9 @@ import bjunit.BJUnit;
 var testEngine = new BJUnit(SomeTest.class);
 
 testEngine.execute();
+
+## hw04
+
+Проанализировать работу разных сборщиков мусора.
+
+Я взял G1, ZGC, ParallelGC. Выводы >> CONSLUSIONS.md

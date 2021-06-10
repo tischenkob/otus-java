@@ -1,5 +1,7 @@
 package ru.otus.model;
 
+import java.util.List;
+
 public class Message {
     private final long id;
     private final String field1;
@@ -15,6 +17,14 @@ public class Message {
     private final String field11;
     private final String field12;
     private final ObjectForMessage field13;
+
+    public static Message copyOf(Message instance) {
+        var data = instance.getField13().getData();
+        var dataCopy = List.copyOf(data);
+        ObjectForMessage objectCopy = new ObjectForMessage();
+        objectCopy.setData(dataCopy);
+        return instance.toBuilder().field13(objectCopy).build();
+    }
 
     //todo: 1. Добавить поля field11 - field13 (для field13 используйте класс ObjectForMessage)
     // DONE

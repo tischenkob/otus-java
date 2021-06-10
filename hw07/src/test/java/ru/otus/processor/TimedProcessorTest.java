@@ -3,36 +3,34 @@ package ru.otus.processor;
 import org.junit.jupiter.api.Test;
 import ru.otus.model.Message;
 
-import java.time.LocalTime;
-
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class TimedProcessorTest {
 
+    private final Message message = new Message.Builder(1L).build();
+
     @Test
-    void processTest() throws InterruptedException {
-        var message = new Message.Builder(1L).build();
-        var processor = new TimedProcessor();
+    void supplyEvenSeconds_shouldThrow() throws InterruptedException {
+        var timeMock = mock(Time.class);
+        when(timeMock.getSeconds()).thenReturn(2);
 
-        Runnable code = () -> {
-
-            System.gc(); // Попытаться избежать STW
-
-            // Попытаться дождаться начала четной секунды
-            while ( //Thread.interrupted() || С этим, наверное, никогда завершения не дождешься
-                    ((LocalTime.now().getSecond() % 2) != 0) ||
-                    (LocalTime.now().getNano() > 5_000_000)) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            // Здесь всё ещё может произойти прерывание или сборка мусора, но они, надеюсь, не превзойдут половину секунды
-            // Да и внутри вызова метода между if и throw оно тоже может случиться
-            processor.process(message);
-        };
+        var processor = new TimedProcessor(timeMock);
+        Runnable code = () -> processor.process(message);
 
         assertThatThrownBy(code::run).isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    void supplyOddSeconds_shouldNotThrow() throws InterruptedException {
+        var timeMock = mock(Time.class);
+        when(timeMock.getSeconds()).thenReturn(1);
+
+        var processor = new TimedProcessor(timeMock);
+        Runnable code = () -> processor.process(message);
+
+        assertThatNoException().isThrownBy(code::run);
     }
 }

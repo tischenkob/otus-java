@@ -13,11 +13,14 @@ class DelegatingInvocationHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        if (args == null) args = new Object[0];
+        Object[] finalArgs = args;
+
         final var instance = clazz.getDeclaredConstructor().newInstance();
         var instanceMethod = clazz.getMethod(method.getName(), method.getParameterTypes());
         for (var annotation : instanceMethod.getAnnotations()) {
             var annotationHandler = AnnotatedMethodHandlerFactory.getHandlerFor(annotation);
-            annotationHandler.ifPresent(methodHandler -> methodHandler.handle(method, args));
+            annotationHandler.ifPresent(methodHandler -> methodHandler.handle(method, finalArgs));
         }
         return instanceMethod.invoke(instance, args);
     }

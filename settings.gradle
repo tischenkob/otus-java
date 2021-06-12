@@ -4,4 +4,5 @@ include ":hw01"
 include "hw02"
 include ":hw03:app", ':hw03:bjunit'
 include 'hw04'
+include ":hw05:app", ":hw05:aop_engine"
 include ":hw06"

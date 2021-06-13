@@ -1,7 +1,8 @@
 rootProject.name = "otus-hw"
 
 include ":hw01"
-include "hw02"
-include ":hw03:app", ':hw03:bjunit'
-include 'hw04'
+include ":hw02"
+include ":hw03:app", ":hw03:bjunit"
+include ":hw04"
 include ":hw06"
+include ":hw07"

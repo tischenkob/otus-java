@@ -1,27 +1,37 @@
 package ru.otus.aop;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.*;
 
 class DelegatingInvocationHandler implements InvocationHandler {
 
-    private final Class<?> clazz;
+    private final Object instance;
+    private final Map<Method, Collection<AnnotatedMethodHandler>> handlersMap = new HashMap<>();
 
-    public DelegatingInvocationHandler(Class<?> instance) {
-        clazz = instance;
+    public DelegatingInvocationHandler(Class<?> clazz) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        instance = clazz.getDeclaredConstructor().newInstance();
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (args == null) args = new Object[0];
-        Object[] finalArgs = args;
+        final Object[] finalArgs = (args == null) ? new Object[0] : args;
+        var handlers= handlersMap.computeIfAbsent(method, this::collectHandlers);
+        handlers.forEach(handler -> handler.handle(method, finalArgs));
+        return method.invoke(instance, args);
+    }
 
-        final var instance = clazz.getDeclaredConstructor().newInstance();
-        var instanceMethod = clazz.getMethod(method.getName(), method.getParameterTypes());
-        for (var annotation : instanceMethod.getAnnotations()) {
-            var annotationHandler = AnnotatedMethodHandlerFactory.getHandlerFor(annotation);
-            annotationHandler.ifPresent(methodHandler -> methodHandler.handle(method, finalArgs));
+    private Collection<AnnotatedMethodHandler> collectHandlers(Method method) {
+        List<AnnotatedMethodHandler> handlers = new ArrayList<>();
+        try {
+            for (var annotation : instance.getClass().getMethod(method.getName(), method.getParameterTypes()).getAnnotations()) {
+                var annotationHandler = AnnotatedMethodHandlerFactory.getHandlerFor(annotation);
+                annotationHandler.ifPresent(handlers::add);
+            }
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
         }
-        return instanceMethod.invoke(instance, args);
+        return handlers;
     }
 }

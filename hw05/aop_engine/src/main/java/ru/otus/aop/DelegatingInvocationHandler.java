@@ -25,7 +25,8 @@ class DelegatingInvocationHandler implements InvocationHandler {
     private Collection<AnnotatedMethodHandler> collectHandlers(Method method) {
         List<AnnotatedMethodHandler> handlers = new ArrayList<>();
         try {
-            for (var annotation : instance.getClass().getMethod(method.getName(), method.getParameterTypes()).getAnnotations()) {
+            var instanceMethod = instance.getClass().getMethod(method.getName(), method.getParameterTypes());
+            for (var annotation : instanceMethod.getAnnotations()) {
                 var annotationHandler = AnnotatedMethodHandlerFactory.getHandlerFor(annotation);
                 annotationHandler.ifPresent(handlers::add);
             }

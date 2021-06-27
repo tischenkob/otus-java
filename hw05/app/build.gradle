@@ -1,0 +1,7 @@
+plugins {
+    id 'java-app'
+}
+
+dependencies {
+    implementation project(":hw05:aop_engine")
+}

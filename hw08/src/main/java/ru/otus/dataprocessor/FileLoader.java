@@ -10,7 +10,7 @@ public class FileLoader implements Loader {
 
     @Override
     public List<Measurement> load() {
-        //читает файл, парсит и возвращает результат
+        // TODO: читает файл, парсит и возвращает результат
         return null;
     }
 }

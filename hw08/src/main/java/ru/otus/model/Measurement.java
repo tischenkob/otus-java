@@ -1,7 +1,7 @@
 package ru.otus.model;
 
 
-//Допустим, этот класс библиотечный, его нельзя менять
+// Допустим, этот класс библиотечный, его нельзя менять
 public class Measurement {
     private final String name;
     private final double value;

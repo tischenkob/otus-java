@@ -15,7 +15,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 class ProcessorTest {
 
-    //Надо реализовать методы классов и убедиться, что тест проходит
+    // TODO: Надо реализовать методы классов и убедиться, что тест проходит
 
     @Test
     @Disabled // Эту аннотацию надо убрать

@@ -27,7 +27,7 @@ public class TransactionRunnerJdbc implements TransactionRunner {
         });
     }
 
-    private <T> T wrapException(Callable<T> action) {
+    public static <T> T wrapException(Callable<T> action) {
         try {
             return action.call();
         } catch (Exception ex) {

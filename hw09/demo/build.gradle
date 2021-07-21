@@ -1,0 +1,17 @@
+plugins {
+    id 'java-app'
+}
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+dependencies {
+    dependencies {
+        implementation 'ch.qos.logback:logback-classic:1.2.3'
+        implementation 'org.flywaydb:flyway-core:6.4.4'
+        implementation 'org.postgresql:postgresql:42.2.5'
+    }
+}
+
+test {
+}

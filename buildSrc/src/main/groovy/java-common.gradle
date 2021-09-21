@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "com.github.johnrengelman.shadow"
 }
 
 repositories {
@@ -9,12 +10,11 @@ repositories {
 
 dependencies {
     constraints {
-        implementation 'org.apache.commons:commons-text:1.9'
+        implementation 'org.apache.commons:commons-text'
     }
-
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
-    testImplementation "org.mockito:mockito-core:3.7.7"
+    testImplementation "org.mockito:mockito-core"
 }
 
 tasks.named('test') {

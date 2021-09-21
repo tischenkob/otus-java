@@ -9,9 +9,9 @@ dependencies {
     dependencies {
         implementation project(":hw09:demo")
 
-        implementation 'ch.qos.logback:logback-classic:1.2.3'
-        implementation 'org.flywaydb:flyway-core:6.4.4'
-        implementation 'org.postgresql:postgresql:42.2.5'
+        implementation 'ch.qos.logback:logback-classic'
+        implementation 'org.flywaydb:flyway-core'
+        implementation 'org.postgresql:postgresql'
     }
 }
 

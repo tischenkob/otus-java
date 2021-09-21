@@ -1,12 +1,11 @@
 plugins {
   id "java-app"
-  id "com.github.johnrengelman.shadow" version "6.1.0"
 }
 
 mainClassName = "otus.tisch.HelloOtus"
 
 dependencies {
-    implementation "com.google.guava:guava:30.0-jre"
+    implementation "com.google.guava:guava"
 }
 
 shadowJar {

@@ -1,15 +1,19 @@
 package ru.otus.crm.model;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.*;
+import org.hibernate.Hibernate;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+import static javax.persistence.FetchType.*;
 
 @Entity
-@Table(name = "client")
+@Getter
+@Setter
 public class Client implements Cloneable {
 
     @Id
@@ -20,12 +24,19 @@ public class Client implements Cloneable {
     @Column(name = "name")
     private String name;
 
+    @OneToOne
+    @JoinColumn(name = "address_data_set_id")
+    private AddressDataSet addressDataSet;
+
+    @OneToMany(mappedBy = "client", fetch = EAGER)
+    private Set<PhoneDataSet> phoneDataSets = new HashSet<>();
+
     public Client() {
+        this(null, null);
     }
 
     public Client(String name) {
-        this.id = null;
-        this.name = name;
+        this(null, name);
     }
 
     public Client(Long id, String name) {
@@ -38,27 +49,16 @@ public class Client implements Cloneable {
         return new Client(this.id, this.name);
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Client client = (Client) o;
+        return id != null && Objects.equals(id, client.id);
     }
 
     @Override
-    public String toString() {
-        return "Client{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+    public int hashCode() {
+        return Objects.hash(id, name, phoneDataSets, addressDataSet);
     }
 }

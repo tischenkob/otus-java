@@ -28,32 +28,31 @@ public class HomeWork {
         var transactionRunner = new TransactionRunnerJdbc(dataSource);
         var dbExecutor = new DbExecutorImpl();
 
-        // Работа с клиентом
         EntityClassMetaData<Client> entityClassMetaDataClient = new EntityClassMetaDataImpl<>(Client.class);
         EntitySQLMetaData entitySQLMetaDataClient = new EntitySQLMetaDataImpl(entityClassMetaDataClient);
-        var dataTemplateClient = new DataTemplateJdbc<>(dbExecutor, entitySQLMetaDataClient, entityClassMetaDataClient); //реализация DataTemplate, универсальная
+        var dataTemplateClient = new DataTemplateJdbc<>(dbExecutor, entitySQLMetaDataClient, entityClassMetaDataClient);
 
         // Код дальше должен остаться
         var dbServiceClient = new DbServiceClientImpl(transactionRunner, dataTemplateClient);
-        dbServiceClient.saveClient(new Client("dbServiceFirst"));
+        var client = dbServiceClient.saveClient(new Client("OTUS"));
 
-        var clientSecond = dbServiceClient.saveClient(new Client("dbServiceSecond"));
-        var clientSecondSelected = dbServiceClient.getClient(clientSecond.getId())
-                .orElseThrow(() -> new RuntimeException("Client not found, id:" + clientSecond.getId()));
-        log.info("clientSecondSelected:{}", clientSecondSelected);
+        var timeBeforeDB = System.currentTimeMillis();
+        var clientDB = dbServiceClient.getClient(client.getId()).orElseThrow(
+                () -> new RuntimeException("Client not found, id:" + client.getId())
+        );
+        var timeAfterDB = System.currentTimeMillis();
 
-        // Сделайте то же самое с классом Manager (для него надо сделать свою таблицу)
-        EntityClassMetaData<Manager> entityClassMetaDataManager = new EntityClassMetaDataImpl<>(Manager.class);
-        EntitySQLMetaData entitySQLMetaDataManager = new EntitySQLMetaDataImpl(entityClassMetaDataManager);
-        var dataTemplateManager = new DataTemplateJdbc<>(dbExecutor, entitySQLMetaDataManager, entityClassMetaDataManager);
+        var clientCache = dbServiceClient.getClient(client.getId()).orElseThrow(
+                () -> new RuntimeException("Client not found, id:" + client.getId())
+        );
+        var timeAfterCache = System.currentTimeMillis();
 
-        var dbServiceManager = new DbServiceManagerImpl(transactionRunner, dataTemplateManager);
-        dbServiceManager.saveManager(new Manager("ManagerFirst"));
+        if (clientDB != clientCache) throw new RuntimeException("Wrong client");
+        var deltaDB =  timeAfterDB - timeBeforeDB;
+        var deltaCache = timeAfterDB - timeAfterCache;
 
-        var managerSecond = dbServiceManager.saveManager(new Manager("ManagerSecond"));
-        var managerSecondSelected = dbServiceManager.getManager(managerSecond.getNo())
-                .orElseThrow(() -> new RuntimeException("Manager not found, id:" + managerSecond.getNo()));
-        log.info("managerSecondSelected:{}", managerSecondSelected);
+        if (deltaCache > deltaDB) throw new RuntimeException("Cache is not working!");
+        log.info("Database: {}\t Cache: {}", deltaDB, deltaCache);
     }
 
     private static void flywayMigrations(DataSource dataSource) {

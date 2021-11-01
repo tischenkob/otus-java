@@ -25,6 +25,7 @@ public class DbServiceClientImpl implements DBServiceClient {
 
     @Override
     public Client saveClient(Client client) {
+        cache.remove(client.getId());
         return transactionRunner.doInTransaction(connection -> {
             if (client.getId() == null) {
                 var clientId = clientDataTemplate.insert(connection, client);

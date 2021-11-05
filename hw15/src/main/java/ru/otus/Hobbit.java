@@ -1,5 +1,8 @@
 package ru.otus;
 
+import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,22 +11,31 @@ public class Hobbit {
 
     private static final Logger logger = LoggerFactory.getLogger(Hobbit.class);
 
-    private final Object link;
+    private final TurnHolder turnHolder;
 
-    Hobbit(Object instance) {
-        link = instance;
+    Hobbit(TurnHolder instance) {
+        turnHolder = instance;
     }
 
     public static void main(String[] args) {
-        Object link = new Object();
+        TurnHolder holder = new TurnHolder();
+        var bilbo = new Hobbit(holder);
+        var frodo = new Hobbit(holder);
+        holder.setWhoseTurnNext(frodo);
 
-        var bilbo = new Hobbit(link);
         var theHobbit = adventureFor(bilbo);
-        theHobbit.start();
-
-        var frodo = new Hobbit(link);
         var theLordOfTheRings = adventureFor(frodo);
-        theLordOfTheRings.start();
+
+        List<Thread> adventures = List.of(theHobbit, theLordOfTheRings);
+
+        adventures.forEach(Thread::start);
+        adventures.forEach(adventure -> {
+            try{
+                adventure.join();
+            }catch (InterruptedException e) {
+                logger.error(e.getMessage());
+            }
+        });
     }
 
     static Thread adventureFor(Hobbit hobbit) {
@@ -38,13 +50,27 @@ public class Hobbit {
         for (int i = 10; i >= 1; i--) {
             step(i);
         }
+        synchronized (turnHolder) {
+            logger.info("Lived happily ever after");
+            turnHolder.setWhoseTurnNext(this);
+            turnHolder.notifyAll();
+        }
     }
 
     private void step(int i) throws InterruptedException {
-        synchronized (link) {
+        synchronized (turnHolder) {
             logger.info(String.valueOf(i));
-            link.notifyAll();
-            link.wait();
+            turnHolder.setWhoseTurnNext(this);
+            turnHolder.notifyAll();
+            while (turnHolder.whoseTurnNext == this){
+                turnHolder.wait();
+            }
         }
+    }
+
+    @Setter
+    @Getter
+    static class TurnHolder {
+        private volatile Hobbit whoseTurnNext;
     }
 }

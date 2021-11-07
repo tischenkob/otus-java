@@ -7,30 +7,27 @@ import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import ru.otus.crm.service.DBServiceClient;
 import ru.otus.dao.UserDao;
 import ru.otus.helpers.FileSystemHelper;
 import ru.otus.services.TemplateProcessor;
-import ru.otus.servlet.UsersApiServlet;
-import ru.otus.servlet.UsersServlet;
+import ru.otus.servlet.ClientsServlet;
 
 
 public class UsersWebServerSimple implements UsersWebServer {
     private static final String START_PAGE_NAME = "index.html";
     private static final String COMMON_RESOURCES_DIR = "static";
 
-    private final UserDao userDao;
-    private final Gson gson;
     protected final TemplateProcessor templateProcessor;
     private final Server server;
+    protected final DBServiceClient clientService;
 
     public UsersWebServerSimple(int port,
-                                UserDao userDao,
-                                Gson gson,
-                                TemplateProcessor templateProcessor) {
-        this.userDao = userDao;
-        this.gson = gson;
+                                TemplateProcessor templateProcessor,
+                                DBServiceClient clientService) {
         this.templateProcessor = templateProcessor;
         server = new Server(port);
+        this.clientService = clientService;
     }
 
     @Override
@@ -58,7 +55,7 @@ public class UsersWebServerSimple implements UsersWebServer {
 
         HandlerList handlers = new HandlerList();
         handlers.addHandler(resourceHandler);
-        handlers.addHandler(applySecurity(servletContextHandler, "/users", "/api/user/*"));
+        handlers.addHandler(applySecurity(servletContextHandler, "/users", "/api/user/*", "/clients"));
 
 
         server.setHandler(handlers);
@@ -79,8 +76,7 @@ public class UsersWebServerSimple implements UsersWebServer {
 
     private ServletContextHandler createServletContextHandler() {
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        servletContextHandler.addServlet(new ServletHolder(new UsersServlet(templateProcessor, userDao)), "/users");
-        servletContextHandler.addServlet(new ServletHolder(new UsersApiServlet(userDao, gson)), "/api/user/*");
+        servletContextHandler.addServlet(new ServletHolder(new ClientsServlet(clientService, templateProcessor)), "/clients");
         return servletContextHandler;
     }
 }

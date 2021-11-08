@@ -6,7 +6,9 @@ import ru.otus.core.repository.DataTemplateHibernate;
 import ru.otus.core.repository.HibernateUtils;
 import ru.otus.core.sessionmanager.TransactionManagerHibernate;
 import ru.otus.crm.dbmigrations.MigrationsExecutorFlyway;
+import ru.otus.crm.model.AddressDataSet;
 import ru.otus.crm.model.Client;
+import ru.otus.crm.model.PhoneDataSet;
 import ru.otus.crm.service.DBServiceClient;
 import ru.otus.crm.service.DbServiceClientImpl;
 import ru.otus.dao.InMemoryUserDao;
@@ -43,14 +45,16 @@ public class WebServerWithFilterBasedSecurityDemo {
 
         new MigrationsExecutorFlyway(dbUrl, dbUserName, dbPassword).executeMigrations();
         var sessionFactory = HibernateUtils.buildSessionFactory(configuration,
-                                                                Client.class);
+                                                                Client.class,
+                                                                AddressDataSet.class,
+                                                                PhoneDataSet.class);
         var transactionManager = new TransactionManagerHibernate(sessionFactory);
 
         UserDao userDao = new InMemoryUserDao();
         TemplateProcessor templateProcessor = new TemplateProcessorImpl(TEMPLATES_DIR);
         UserAuthService authService = new UserAuthServiceImpl(userDao);
-        DataTemplate<Client> clientTemplate = new DataTemplateHibernate<>(Client.class);
-        DBServiceClient clientService = new DbServiceClientImpl(transactionManager, clientTemplate);
+        DBServiceClient clientService = new DbServiceClientImpl(transactionManager,
+                                                                new DataTemplateHibernate<>(Client.class));
 
         UsersWebServer usersWebServer = new UsersWebServerWithFilterBasedSecurity(WEB_SERVER_PORT,
                                                                                   authService,

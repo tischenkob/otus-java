@@ -55,7 +55,7 @@ public class UsersWebServerSimple implements UsersWebServer {
 
         HandlerList handlers = new HandlerList();
         handlers.addHandler(resourceHandler);
-        handlers.addHandler(applySecurity(servletContextHandler, "/users", "/api/user/*", "/clients"));
+        handlers.addHandler(applySecurity(servletContextHandler, "/clients"));
 
 
         server.setHandler(handlers);

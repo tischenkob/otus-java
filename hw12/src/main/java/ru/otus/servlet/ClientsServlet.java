@@ -1,5 +1,7 @@
 package ru.otus.servlet;
 
+import static java.util.stream.Collectors.*;
+
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -7,6 +9,7 @@ import java.io.IOException;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import ru.otus.crm.model.Client;
+import ru.otus.crm.model.Client.DTO;
 import ru.otus.crm.service.DBServiceClient;
 import ru.otus.services.TemplateProcessor;
 
@@ -20,7 +23,10 @@ public class ClientsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse response) throws IOException {
-        Map<String, Object> parameters = Map.of("clients", clientService.findAll());
+        Map<String, Object> parameters = Map.of("clients", clientService.findAll()
+                                                                        .stream()
+                                                                        .map(Client::toDTO)
+                                                                        .collect(toList()));
         final String pageContent = templateProcessor.getPage(CLIENTS_PAGE, parameters);
         response.setContentType("text/html");
         response.getWriter().println(pageContent);
@@ -28,9 +34,13 @@ public class ClientsServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse response) throws IOException {
-        var clientInfo = req.getParameterMap();
-        var client = new Client(clientInfo.get("name")[0]);
-        clientService.saveClient(client);
+        Client.DTO dto = new Client.DTO(
+                0,
+                req.getParameter("name"),
+                req.getParameter("street"),
+                req.getParameter("numbers")
+        );
+        clientService.saveClient(Client.from(dto));
         response.sendRedirect("/clients");
     }
 

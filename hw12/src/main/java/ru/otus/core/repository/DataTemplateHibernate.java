@@ -12,7 +12,6 @@ public class DataTemplateHibernate<T> implements DataTemplate<T> {
         this.clazz = clazz;
     }
 
-    @Override
     public Optional<T> findById(Session session, long id) {
         return Optional.ofNullable(session.find(clazz, id));
     }

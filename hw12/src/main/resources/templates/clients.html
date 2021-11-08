@@ -7,7 +7,13 @@
 <form action="clients" method="post">
   <label>Имя
     <input type="text" name="name"/>
-  </label>
+  </label> <br>
+  <label>Улица
+    <input type="text" name="street"/>
+  </label><br>
+  <label> Телефоны (через запятую)
+    <input type="text" name="numbers"/>
+  </label><br>
   <button type="submit">Добавить</button>
 </form>
 <h4>Клиенты</h4>
@@ -16,6 +22,8 @@
   <tr>
     <td style="width: 50px">Id</td>
     <td style="width: 150px">Имя</td>
+    <td style="width: 150px">Улица</td>
+    <td style="width: 150px">Телефоны</td>
   </tr>
   </thead>
   <tbody>
@@ -23,6 +31,8 @@
   <tr>
     <td>${client.id}</td>
     <td>${client.name}</td>
+    <td>${client.street}</td>
+    <td>${client.numbers}</td>
   </tr>
   </#list>
   </tbody>

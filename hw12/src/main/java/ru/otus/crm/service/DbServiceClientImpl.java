@@ -1,23 +1,21 @@
 package ru.otus.crm.service;
 
 import java.util.List;
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.otus.core.repository.DataTemplate;
 import ru.otus.core.sessionmanager.TransactionManager;
+import ru.otus.crm.model.AddressDataSet;
 import ru.otus.crm.model.Client;
+import ru.otus.crm.model.PhoneDataSet;
 
+@RequiredArgsConstructor
 public class DbServiceClientImpl implements DBServiceClient {
     private static final Logger log = LoggerFactory.getLogger(DbServiceClientImpl.class);
 
-    private final DataTemplate<Client> clientDataTemplate;
     private final TransactionManager transactionManager;
-
-    public DbServiceClientImpl(TransactionManager transactionManager, DataTemplate<Client> clientDataTemplate) {
-        this.transactionManager = transactionManager;
-        this.clientDataTemplate = clientDataTemplate;
-    }
+    private final DataTemplate<Client> clientDataTemplate;
 
     @Override
     public void saveClient(Client client) {
@@ -31,14 +29,6 @@ public class DbServiceClientImpl implements DBServiceClient {
             clientDataTemplate.update(session, clientCloned);
             log.info("updated client: {}", clientCloned);
             return clientCloned;
-        });
-    }
-
-    public Optional<Client> getClient(long id) {
-        return transactionManager.doInTransaction(session -> {
-            var clientOptional = clientDataTemplate.findById(session, id);
-            log.info("client: {}", clientOptional);
-            return clientOptional;
         });
     }
 
